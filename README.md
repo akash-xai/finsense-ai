@@ -262,8 +262,6 @@ GROQ_API_KEY = your_groq_key
 
 ## 👥 Team Simbiotix
 
-Built with ❤️ in 72 hours for the **AMD Developer Hackathon** on lablab.ai
-
 ---
 
 ## 📄 License
