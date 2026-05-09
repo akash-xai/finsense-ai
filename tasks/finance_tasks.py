@@ -6,63 +6,48 @@ from agents.advisor import advisor
 def create_tasks(user_input: str):
 
     analysis_task = Task(
-        description=f"""
-        The user has shared this financial decision:
-        "{user_input}"
-
-        Your job:
-        1. Extract all key financial figures (amounts, income, timeframes)
-        2. Identify the type of decision (spending / saving / investing / loan)
-        3. Calculate relevant ratios (EMI-to-income ratio, savings rate, etc.)
-        4. Summarize your findings in 4-5 clear bullet points
-        5. End with: "Key concern: [one sentence]"
+        description=f"""Analyze this financial decision: "{user_input}"
+        
+        Extract key figures, identify decision type, calculate ratios.
+        Summarize in 3 bullet points. End with: "Key concern: [one sentence]"
         """,
         agent=analyst,
-        expected_output="Bullet-point financial analysis with key metrics and one key concern"
+        expected_output="3 bullet financial analysis with key concern"
     )
 
     risk_task = Task(
-        description=f"""
-        Based on the analyst's findings about this decision:
-        "{user_input}"
-
-        Your job:
-        1. Assign a Risk Score from 1 (very safe) to 10 (very risky)
-        2. Write the worst-case scenario in 2 sentences
-        3. List the top 2 risk factors
-        4. Suggest one specific way to reduce the biggest risk
+        description=f"""Evaluate risk for: "{user_input}"
         
-        Format your response clearly with these 4 sections labeled.
+        1. Risk Score: [1-10]
+        2. Worst case: [1 sentence]
+        3. Top risk: [1 sentence]
+        4. Mitigation: [1 sentence]
         """,
         agent=risk_evaluator,
-        expected_output="Risk score, worst-case scenario, top 2 risk factors, one mitigation tip"
+        expected_output="Risk score, worst case, top risk, mitigation"
     )
 
     advice_task = Task(
-        description=f"""
-        Based on the full analysis and risk evaluation for:
-        "{user_input}"
+        description=f"""Give final recommendation for: "{user_input}"
 
-        Your job — respond in this EXACT format:
-
-        VERDICT: [GO / WAIT / AVOID]
+        Respond in EXACTLY this format:
+        VERDICT: [GO/WAIT/AVOID]
         CONFIDENCE: [0-100]%
-
-        WHY: [2-3 sentences explaining your recommendation]
-
+        Risk Score: [1-10]
+        
+        WHY: [2 sentences max]
+        
         ACTION STEPS:
-        1. [Specific action step]
-        2. [Specific action step]  
-        3. [Specific action step]
-
-        ALTERNATIVE: If instead you [did X], you could [outcome Y].
-
-        DISCLAIMER: This is AI-generated analysis for informational 
-        purposes only. Consult a certified financial advisor before 
-        making major decisions.
+        1. [action]
+        2. [action]
+        3. [action]
+        
+        ALTERNATIVE: [1 sentence]
+        
+        DISCLAIMER: AI analysis only. Consult a certified advisor.
         """,
         agent=advisor,
-        expected_output="Structured verdict with confidence score, reasoning, 3 action steps, alternative scenario"
+        expected_output="Structured verdict with confidence, risk, actions"
     )
 
     return [analysis_task, risk_task, advice_task]
